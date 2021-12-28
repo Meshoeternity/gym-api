@@ -15,7 +15,7 @@ const coachSchema = new mongoose.Schema({
     ref: "Class",
   }]
 })
-//اللي بنستقبله من المستخدم
+//
 const coachJoi = Joi.object({
   firstName: Joi.string().min(2).max(100).required(),
   lastName: Joi.string().min(2).max(100),

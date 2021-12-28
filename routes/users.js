@@ -166,7 +166,7 @@ router.post("/add-admin", checkAdmin, validateBody(signupJoi), async (req, res) 
     const userFound = await User.findOne({ email })
     if (userFound) return res.status(400).send("user already registered")
 
-    const salt = await bcrypt.genSalt(10) //لتشفير الباسورد خلطة ملح يعني
+    const salt = await bcrypt.genSalt(10) 
     const hash = await bcrypt.hash(password, salt)
 
     const user = new User({

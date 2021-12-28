@@ -14,7 +14,7 @@ const classSchema = new mongoose.Schema({
     },
   ],
 })
-//اللي بنستقبله من المستخدم
+
 const classAddJoi = Joi.object({
   time: Joi.string().min(2).max(1000).required(),
   sportId: Joi.objectid().required(),

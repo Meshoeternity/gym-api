@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken")
 const { User } = require("../models/User")
 
 const checkAdmin = async (req, res, next) => {
-  //next يعني بينادي اللي بعده
+
   try {
     const token = req.header("Authorization")
     if (!token) return res.status(401).send("token is missing")
