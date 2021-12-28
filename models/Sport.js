@@ -21,13 +21,11 @@ const sportAddJoi = Joi.object({
     title: Joi.string().min(1).max(200).required(),
     poster: Joi.string().uri().min(5).max(1000).required(),
     coach: Joi.objectid().required(),
-   classes: Joi.array().items(Joi.objectid()),
   })
   const sportEditJoi = Joi.object({
     title: Joi.string().min(1).max(200),
     poster: Joi.string().uri().min(5).max(1000),
     coach: Joi.objectid(),
-   classes: Joi.array().items(Joi.objectid()).min(1),
   })
   const Sport = mongoose.model("Sport", sportSchema)
 module.exports.Sport = Sport

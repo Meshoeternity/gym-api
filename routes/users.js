@@ -129,6 +129,12 @@ router.delete("/users/:id", checkAdmin, checkId, async (req, res) => {
 router.get("/profile", checkToken, async (req, res) => {
   try {
     const user = await User.findById(req.userId).select("-__v -password")
+    .populate({
+      path:"classes",
+      select:"-members",
+      populate:"sport"
+    })
+    
     if (!user) return res.status(404).send("user not found")
     res.json(user)
   } catch (error) {

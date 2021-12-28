@@ -6,6 +6,7 @@ const checkId = require("../middleware/chekId")
 const checkToken = require("../middleware/chekToken")
 const { Class, classAddJoi, classEditJoi } = require("../models/Class")
 const { Sport } = require("../models/Sport")
+const { User } = require("../models/User")
 const validateId = require("../middleware/validateId")
 // //----------------------------------get-----------------------------------------------------------
 //----------------------------class----------------------
