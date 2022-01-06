@@ -6,7 +6,7 @@ Joi.objectid = JoiObjectId(Joi)
 const mongoose = require("mongoose")
 const users = require("./routes/users")
 const sports = require("./routes/sports")
-// const subscripes = require("./routes/subscripes")
+// const privtclass = require("./routes/privtclass")
 const coachs = require("./routes/coachs")
 const classes = require("./routes/classes")
 
@@ -29,7 +29,7 @@ app.use("/api/auth", users)
 app.use("/api/sports",sports)
 app.use("/api/coachs",coachs)
 app.use("/api/classes",classes)
-// app.use("/api/subscripes",subscripes)
+// app.use("/api/privtclass",privtclass)
 
 const port = 5000
 app.listen(port, () => {

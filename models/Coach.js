@@ -2,18 +2,21 @@ const mongoose = require("mongoose")
 const Joi = require("joi")
 
 const coachSchema = new mongoose.Schema({
-  sport: {
+  sport: [{
     type: mongoose.Types.ObjectId,
     ref: "Sport",
-  },
-
+  }],
+  availableTimes: [String],
   firstName: String,
   lastName: String,
   photo: String,
-  classes:[{
-    type: mongoose.Types.ObjectId,
-    ref: "Class",
-  }]
+
+  privtclass: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "PrivtClass",
+    },
+  ],
 })
 //
 const coachJoi = Joi.object({

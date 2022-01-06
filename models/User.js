@@ -29,7 +29,10 @@ const userSchema = new mongoose.Schema({
     enum: ["Admin", "User"],
     default: "User",
   },
- 
+  privtclass:{
+    type: mongoose.Types.ObjectId,
+    ref: "PrivtClass",
+  }
 })
 const signupJoi = Joi.object({
   firstName: Joi.string().min(2).max(100).required(),

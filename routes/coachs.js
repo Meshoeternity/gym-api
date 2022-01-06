@@ -7,13 +7,23 @@ const checkId = require("../middleware/chekId")
 //---------------------------------------------------get coaches-------------------------------------------------------------------
 
 router.get("/", async (req, res) => {
-  const coachs = await Coach.find().populate("sport")
+  const coachs = await Coach.find()
+  .populate({
+    path: "sport", select: "-classes",
+    populate: {
+      path: "classes",
+    
+    },
+  })
+
+
   res.json(coachs)
 })
 //--------------------------------------------------get coach
 router.get("/coachs/:id", chekAdmin, checkId, async (req, res) => {
   try {
     const coachs = await Coach.findById(req.params.id).select("-__v")
+
     if (!coachs) return res.status(404).send("coachs not found ")
     res.json(coachs)
   } catch (error) {

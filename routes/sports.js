@@ -40,19 +40,23 @@ router.get("/:id", checkId, async (req, res) => {
 //------------------------------------------------------------------------------------------------
 router.post("/", chekAdmin, validateBody(sportAddJoi), async (req, res) => {
   try {
-    const { title, poster, coach } = req.body
+    const { title, poster, coach, description } = req.body
 
     const coachFound = await Coach.findOne({ _id: coach })
     if (!coachFound) return res.status(404).send("coach not found")
+    
+    
 
     const sport = new Sport({
       title,
       poster,
       coach,
+      description,
+      
     })
 
     await sport.save()
-    await Coach.findByIdAndUpdate(coach, { $set: { sport: sport._id } })
+    await Coach.findByIdAndUpdate(coach, { $push: { sport: sport._id } })
     res.json(sport)
   } catch (error) {
     return res.status(500).send(error.message)
@@ -61,7 +65,7 @@ router.post("/", chekAdmin, validateBody(sportAddJoi), async (req, res) => {
 //----------------------------------------- put sport---------------------------------------------------
 router.put("/:id", chekAdmin, checkId, validateBody(sportEditJoi), async (req, res) => {
   try {
-    const { title, poster, coach } = req.body
+    const { title, poster, coach, description } = req.body
 
     const coachFound = await Coach.findOne({ _id: coach })
     if (!coachFound) return res.status(404).send("coach not found")
@@ -70,6 +74,7 @@ router.put("/:id", chekAdmin, checkId, validateBody(sportEditJoi), async (req, r
       title,
       poster,
       coach,
+      description,
     })
 
     sport = await Sport.findByIdAndUpdate(req.params.id, { $set: { title, poster, coach } }, { new: true })
