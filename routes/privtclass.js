@@ -6,7 +6,6 @@ const router = express.Router()
 const validateBody = require("../middleware/validateBody")
 const checkToken = require("../middleware/chekToken")
 const { PrivtClass, privtclassAddJoi} = require("../models/PrivtClass")
-const { PrivtClass } = require("../models/PrivtClass")
 const { User } = require("../models/User")
 const { Coach } = require("../models/Coach")
 
@@ -29,7 +28,7 @@ router.post("/:coachId", checkToken, validateBody(privtclassAddJoi), async (req,
   
   
       await Coach.findByIdAndUpdate(req.params.coachId, { $push: { privtclass: newprivtclass._id }, $pull: {availableTimes: time} })
-      await User.findByIdAndUpdate(req.userId, { $set: {privtclass: newprivtclass._id } })
+      // await User.findByIdAndUpdate(req.userId, { $set: {privtclass: newprivtclass._id } })
   
       res.json(newprivtclass)
     } catch (error) {

@@ -81,5 +81,20 @@ router.post("/:classId/sub-class", checkToken, validateId("classId"), async (req
     return res.status(500).send(error.message)
   }
 })
+//-----------------------------------------------------
+
+
+router.delete("/:classId/sub-class", checkToken, async (req, res) => {
+  try {
+    const classFound = await Class.findByIdAndRemove(req.params.classId, { $pull: { members: req.userId } }) 
+    if (!classFound) return res.status(404).send("class not found")
+
+    await User.findByIdAndUpdate(req.userId, { $pull: { classes:req.params.classId } })
+
+    res.send("class removed")
+  } catch (error) {
+    return res.status(500).send(error.message)
+  }
+})
 
 module.exports = router

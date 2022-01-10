@@ -87,10 +87,12 @@ router.put("/:id", chekAdmin, checkId, validateBody(sportEditJoi), async (req, r
 //-----------------------------------------------------------------------------------------------
 router.delete("/:id", chekAdmin, checkId, async (req, res) => {
   try {
-    await Class.deleteMany({ classId: req.params.id })
+    await Class.deleteMany({ sport: req.params.id })
 
     const sport = await Sport.findByIdAndRemove(req.params.id)
     if (!sport) return res.status(404).send("sport not found")
+    await Coach.findByIdAndUpdate(sport.coach, { $pull: { sport: sport._id } })
+
     res.send("sport is removed")
   } catch (error) {
     res.status(500).send(error.message)

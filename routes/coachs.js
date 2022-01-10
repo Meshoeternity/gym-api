@@ -7,15 +7,10 @@ const checkId = require("../middleware/chekId")
 //---------------------------------------------------get coaches-------------------------------------------------------------------
 
 router.get("/", async (req, res) => {
-  const coachs = await Coach.find()
-  .populate({
-    path: "sport", select: "-classes",
-    populate: {
-      path: "classes",
-    
-    },
+  const coachs = await Coach.find().populate({
+    path: "sport",
+    populate: "classes",
   })
-
 
   res.json(coachs)
 })
@@ -37,7 +32,7 @@ router.get("/coachs/:id", chekAdmin, checkId, async (req, res) => {
 
 router.post("/", chekAdmin, validateBody(coachJoi), async (req, res) => {
   try {
-    const { firstName, lastName, photo} = req.body
+    const { firstName, lastName, photo } = req.body
 
     const coach = new Coach({
       firstName,
@@ -63,11 +58,7 @@ router.put("/:id", chekAdmin, checkId, validateBody(coachEditJoi), async (req, r
       photo,
     } = req.body
 
-    const coach = await Coach.findByIdAndUpdate(
-      req.params.id,
-      { $set: { firstName, lastName, photo } },
-      { new: true }
-    )
+    const coach = await Coach.findByIdAndUpdate(req.params.id, { $set: { firstName, lastName, photo } }, { new: true })
 
     if (!coach) return res.status(404).send("coach not found")
 
