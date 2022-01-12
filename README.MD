@@ -1,4 +1,6 @@
 # Backend routes
+
+## - USER 
 | HTTP Method | URL | Request Body | Success status | Error status | Description |
 |-------------|-----|--------------|----------------|--------------|-------------|
 |   Post      |/signup|(firstName,lastName,email,password,avatar)|201|400|       |
@@ -8,3 +10,6 @@
 |Post        |/add-admin|(firstName, lastName, email, password, avatar)|200|500| |
 |Get         |/users|                    |    |   |                         |
 |DELETE      |/users/:id|                | 200|500 |                         |
+
+## - SPORTS
+
