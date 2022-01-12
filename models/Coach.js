@@ -6,7 +6,7 @@ const coachSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: "Sport",
   }],
-  availableTimes: [String],
+
   firstName: String,
   lastName: String,
   photo: String,

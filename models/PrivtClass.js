@@ -7,6 +7,13 @@ const privtclassSchema = new mongoose.Schema({
     ref: "Coach",
   },
   time: String,
+  
+ user: 
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
+
  
 })
 

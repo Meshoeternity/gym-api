@@ -10,7 +10,8 @@ router.get("/", async (req, res) => {
   const coachs = await Coach.find().populate({
     path: "sport",
     populate: "classes",
-  })
+
+  }).populate("privtclass")
 
   res.json(coachs)
 })

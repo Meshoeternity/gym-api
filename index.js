@@ -11,6 +11,7 @@ const coachs = require("./routes/coachs")
 const classes = require("./routes/classes")
 
 
+
 require("dotenv").config()
 
 mongoose
@@ -30,6 +31,7 @@ app.use("/api/sports",sports)
 app.use("/api/coachs",coachs)
 app.use("/api/classes",classes)
 app.use("/api/privtclass",privtclass)
+
 
 const port = 5000
 app.listen(port, () => {
