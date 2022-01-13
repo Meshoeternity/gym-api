@@ -12,7 +12,7 @@ const validateId = require("../middleware/validateId")
 //----------------------------------get-----------------------------------------------------------
 //----------------------------// available times //----------------------
 router.get("/", async (req, res) => {
-  const privtclass = await PrivtClass.find({ user: undefined })
+  const privtclass = await PrivtClass.find({ user: undefined }).populate("coach")
 
   res.json(privtclass)
 })
@@ -78,13 +78,14 @@ router.delete("/:id", chekAdmin, async (req, res) => {
 //--------------------------add  sub-privtclass-------   الاشتراك بكلاس خاص-----------------------------------------------
 router.post("/:privtclassId/sub-privtclass", checkToken, validateId("privtclassId"), async (req, res) => {
   try {
-    const privtclassFound = await PrivtClass.findByIdAndUpdate(req.params.privtclassId, { $set: { user: req.userId } })
-    if (!privtclassFound) return res.status(404).send("privtclass not found")
-
     const user = await User.findById(req.userId)
     if (user.privtclass) return res.status(400).send("you already have privtclass")
 
+    const privtclassFound = await PrivtClass.findByIdAndUpdate(req.params.privtclassId, { $set: { user: req.userId } })
+    if (!privtclassFound) return res.status(404).send("privtclass not found")
     await User.findByIdAndUpdate(req.userId, { $set: { privtclass: req.params.privtclassId } })
+
+
 
     res.send("Add privtclass")
   } catch (error) {
@@ -95,11 +96,13 @@ router.post("/:privtclassId/sub-privtclass", checkToken, validateId("privtclassI
 
 router.delete("/:privtclassId/sub-privtclass", checkToken, async (req, res) => {
   try {
-    const privtclassFound = await PrivtClass.findByIdAndRemove(req.params.classId, { $pull: { user: req.userId } })
+    const user = await User.findById(req.userId)
+    if (user.privtclass != req.params.privtclassId) return res.status(400).send("you are not sub to the privtclass")
+
+    const privtclassFound = await PrivtClass.findByIdAndRemove(req.params.privtclassId, { $unset: { user: 1 } })
     if (!privtclassFound) return res.status(404).send("privtclassFound not found")
 
-    await User.findByIdAndUpdate(req.userId, { $unset: { privtclass: undefined } })
-
+    await User.findByIdAndUpdate(req.userId, { $unset: { privtclass: 1 } })
     res.send("class removed")
   } catch (error) {
     return res.status(500).send(error.message)

@@ -106,25 +106,7 @@ router.post("/login/admin", validateBody(loginJoi), async (req, res) => {
     res.status(500).send(error.message)
   }
 })
-//--------------------------------------------get users في الداش بورد
-router.get("/users", checkAdmin, async (req, res) => {
-  const user = await User.find().select("-__v -password")
-  res.json(user)
-})
-//------------------------------------حذف يوزر--------------------
-router.delete("/users/:id", checkAdmin, checkId, async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id).select("-__v -password")
-    if (!user) return res.status(404).send("user not found")
 
-    if (user.role === "Admin") return res.status(403).send("unauthorized action")
-    await User.findByIdAndRemove(req.params.id)
-  
-    res.json(user)
-  } catch (error) {
-    res.status(500).json(error.message)
-  }
-})
 //----------------------------------------------profile------------------------------------------------------------------
 router.get("/profile", checkToken, async (req, res) => {
   try {
@@ -183,6 +165,26 @@ router.post("/add-admin", checkAdmin, validateBody(signupJoi), async (req, res) 
     })
     await user.save()
     delete user._doc.password
+    res.json(user)
+  } catch (error) {
+    res.status(500).json(error.message)
+  }
+})
+
+//--------------------------------------------get users في الداش بورد
+router.get("/users", checkAdmin, async (req, res) => {
+  const user = await User.find().select("-__v -password")
+  res.json(user)
+})
+//------------------------------------حذف يوزر--------------------
+router.delete("/users/:id", checkAdmin, checkId, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select("-__v -password")
+    if (!user) return res.status(404).send("user not found")
+
+    if (user.role === "Admin") return res.status(403).send("unauthorized action")
+    await User.findByIdAndRemove(req.params.id)
+  
     res.json(user)
   } catch (error) {
     res.status(500).json(error.message)

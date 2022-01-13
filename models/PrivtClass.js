@@ -19,7 +19,7 @@ const privtclassSchema = new mongoose.Schema({
 
 const privtclassAddJoi = Joi.object({
   time: Joi.string().min(2).max(1000).required(),
-  coachId: Joi.objectid().required(),
+  coachId: Joi.objectid(),
 })
 const privtclassEditJoi = Joi.object({
   time: Joi.string().min(2).max(1000),
