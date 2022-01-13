@@ -4,13 +4,10 @@ const { Sport, sportAddJoi, sportEditJoi } = require("../models/Sport")
 const chekAdmin = require("../middleware/chekAdmin")
 const validateBody = require("../middleware/validateBody")
 const checkId = require("../middleware/chekId")
-const validateId = require("../middleware/validateId")
 const checkToken = require("../middleware/chekToken")
 const { Class, classJoi } = require("../models/Class")
 const { User } = require("../models/User")
 const { Coach } = require("../models/Coach")
-const checkAdmin = require("../middleware/chekAdmin")
-const chekId = require("../middleware/chekId")
 
 //-----------------------------------------------------------------------------------------------------
 //---------------------------------------sport-----------------------------------------------------------
@@ -44,20 +41,19 @@ router.post("/", chekAdmin, validateBody(sportAddJoi), async (req, res) => {
 
     const coachFound = await Coach.findOne({ _id: coach })
     if (!coachFound) return res.status(404).send("coach not found")
-    
-    
-
-    const sport = new Sport({
+    console.log(coachFound)
+    console.log(coach)
+    const newsport = new Sport({
       title,
       poster,
       coach,
       description,
-      
     })
 
-    await sport.save()
-    await Coach.findByIdAndUpdate(coach, { $push: { sport: sport._id } })
-    res.json(sport)
+    await newsport.save()
+    const coachh = await Coach.findByIdAndUpdate(coachFound, { $push: { sport: newsport._id } })
+    if (!coachh) return res.status(404).send("coach not foundddd")
+    res.json(newsport)
   } catch (error) {
     return res.status(500).send(error.message)
   }
@@ -77,8 +73,11 @@ router.put("/:id", chekAdmin, checkId, validateBody(sportEditJoi), async (req, r
       description,
     })
 
-    sport = await Sport.findByIdAndUpdate(req.params.id, { $set: { title, poster, coach } }, { new: true })
+    sport = await Sport.findByIdAndUpdate(req.params.id, { $set: { title, poster, coach, description } }, { new: true })
     if (!sport) return res.status(404).send("sport not found")
+
+    const coachh = await Coach.findByIdAndUpdate(coachFound, { $set: { sport: sport._id } }, { new: true })
+
     res.json(sport)
   } catch (error) {
     return res.status(500).send(error.message)
@@ -91,7 +90,10 @@ router.delete("/:id", chekAdmin, checkId, async (req, res) => {
 
     const sport = await Sport.findByIdAndRemove(req.params.id)
     if (!sport) return res.status(404).send("sport not found")
-    await Coach.findByIdAndUpdate(sport.coach, { $pull: { sport: sport._id } })
+
+    await Coach.findByIdAndUpdate(req.params.id, { $pull: { sport: req.params.id } })
+
+    console.log(sport)
 
     res.send("sport is removed")
   } catch (error) {
@@ -99,7 +101,5 @@ router.delete("/:id", chekAdmin, checkId, async (req, res) => {
   }
 })
 //--------------------------------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------------------
 
 module.exports = router
