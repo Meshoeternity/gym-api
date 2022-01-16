@@ -11,7 +11,7 @@ const validateId = require("../middleware/validateId")
 // //----------------------------------get-----------------------------------------------------------
 //----------------------------class----------------------
 router.get("/", async (req, res) => {
-  const classes = await Class.find()
+  const classes = await Class.find().populate("sport")
 
   res.json(classes)
 })

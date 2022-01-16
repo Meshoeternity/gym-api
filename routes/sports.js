@@ -39,7 +39,7 @@ router.post("/", chekAdmin, validateBody(sportAddJoi), async (req, res) => {
   try {
     const { title, poster, coach, description } = req.body
 
-    const coachFound = await Coach.findOne({ _id: coach })
+    const coachFound = await Coach.find({ _id: coach })
     if (!coachFound) return res.status(404).send("coach not found")
     console.log(coachFound)
     console.log(coach)
