@@ -15,7 +15,7 @@ const classes = require("./routes/classes")
 require("dotenv").config()
 
 mongoose
-  .connect(`mongodb://localhost:27017/GymDB`)
+  .connect(`mongodb+srv://mashael:${process.env.MANGODB_PASSWORD1}@cluster0.enht6.mongodb.net/gymDB?retryWrites=true&w=majority`)
   .then(() => {
     console.log(" Connected to MongoDB")
   })
