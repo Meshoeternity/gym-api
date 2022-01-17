@@ -10,12 +10,12 @@ const privtclass = require("./routes/privtclass")
 const coachs = require("./routes/coachs")
 const classes = require("./routes/classes")
 
-
-
 require("dotenv").config()
 
 mongoose
-  .connect(`mongodb+srv://mashael:${process.env.MANGODB_PASSWORD1}@cluster0.enht6.mongodb.net/FinalgymDB?retryWrites=true&w=majority`)
+  .connect(
+    `mongodb+srv://mashael:${process.env.MANGODB_PASSWORD1}@cluster0.enht6.mongodb.net/FinalgymDB?retryWrites=true&w=majority`
+  )
   .then(() => {
     console.log(" Connected to MongoDB")
   })
@@ -27,11 +27,10 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 app.use("/api/auth", users)
-app.use("/api/sports",sports)
-app.use("/api/coachs",coachs)
-app.use("/api/classes",classes)
-app.use("/api/privtclass",privtclass)
-
+app.use("/api/sports", sports)
+app.use("/api/coachs", coachs)
+app.use("/api/classes", classes)
+app.use("/api/privtclass", privtclass)
 
 const port = process.env.PORT || 5000
 app.listen(port, () => {
